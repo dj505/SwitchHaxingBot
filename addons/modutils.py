@@ -134,7 +134,6 @@ class ModUtils:
             with open('fwinfo.ini', 'w') as f:
                 config.write(f)
             embed = discord.Embed(title='Added a firmware config', description='Your config has been successfully recorded.', color=0x00FF99)
-            await self.bot.say(embed=embed)
 
         else:
             config.add_section('{}'.format(firmware))
@@ -142,7 +141,7 @@ class ModUtils:
             with open('fwinfo.ini', 'w') as f:
                 config.write(f)
             embed = discord.Embed(title='Added a firmware config', description='Your config has been successfully recorded.', color=0x00FF99)
-            await self.bot.say(embed=embed)
-
+        await self.bot.say(embed=embed)
+        
 def setup(bot):
     bot.add_cog(ModUtils(bot))
