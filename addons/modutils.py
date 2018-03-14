@@ -3,6 +3,7 @@ from discord.ext import commands
 from configparser import SafeConfigParser
 import datetime
 import asyncio
+from bean.py import parser
 
 class ModUtils:
     '''
@@ -127,8 +128,9 @@ class ModUtils:
         '''
         config = SafeConfigParser()
         config.read('fwinfo.ini')
-        firmware = str(fw)
-        description = str(desc)
+        temp = parser(ctx.message.content)
+        firmware = [temp[:temp.find(' ')]]
+        description = temp[temp.find(' ')+1:]
         if config.has_section('{}'.format(firmware)):
             config.set('{}'.format(firmware), 'info', '{}'.format(description))
             with open('fwinfo.ini', 'w') as f:
@@ -142,6 +144,6 @@ class ModUtils:
                 config.write(f)
             embed = discord.Embed(title='Added a firmware config', description='Your config has been successfully recorded.', color=0x00FF99)
         await self.bot.say(embed=embed)
-        
+
 def setup(bot):
     bot.add_cog(ModUtils(bot))
