@@ -3,7 +3,7 @@ from discord.ext import commands
 from configparser import SafeConfigParser
 import datetime
 import asyncio
-from addons.bean import parser
+from addons//bean.py import parser
 
 class ModUtils:
     '''
