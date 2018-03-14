@@ -121,14 +121,14 @@ class ModUtils:
 
     @commands.has_permissions(ban_members=True)
     @commands.command(pass_context=True, brief='Sets hax status for a given FW')
-    async def setfw(self, ctx, fw_info):
+    async def setfw(self, ctx, fw, desc):
         '''
         Sets information for a given firmware version.
         '''
         config = SafeConfigParser()
         config.read('fwinfo.ini')
-        firmware = fw_info["fw_info.find(' ')]
-        description = fw_info[fw_info.find(' ')+1:]
+        firmware = str(fw)
+        description = str(desc)
         if config.has_section('{}'.format(firmware)):
             config.set('{}'.format(firmware), 'info', '{}'.format(description))
             with open('fwinfo.ini', 'w') as f:
