@@ -18,7 +18,11 @@ class Bean:
             embed.set_thumbnail(url='https://i.imgur.com/z2xfrsH.png')
             await self.bot.say(embed=embed)
         else:
-            await self.bot.say('{} is now <:banB:423155991706730499><:banE:423155991798874121><:banA:423155991664787456><:banN:423155991497146380><:banE:423155991798874121><:banD:423155991677501440>'.format(ctx.message.content[6:]))
+            await self.bot.say('{} is now <:banB:423155991706730499><:banE:423155991798874121><:banA:423155991664787456><:banN:423155991497146380><:banE:423155991798874121><:banD:423155991677501440>'.format(parser(ctx.message.content)))
       
+def parser(message):
+    command=message[message.find(prefix)+len(prefix):] 
+    return([command[:command.find(' ')], command[command.find(' ')+1:]]) 
+
 def setup(bot):
     bot.add_cog(Bean(bot))
