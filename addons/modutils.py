@@ -113,7 +113,7 @@ class ModUtils:
 
     @commands.has_permissions(ban_members=True)
     @commands.command(pass_context=True, brief='Sets hax status for a given FW')
-    async def setfw(self, ctx, fw_info):
+    async def setfw(self, ctx, *fw_info):
         '''
         Sets information for a given firmware version.
         '''
