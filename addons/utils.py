@@ -46,8 +46,6 @@ class Utils:
 
             embed = discord.Embed(title='Added Balance', description='Your balance has been updated successfully!', color=0xFFD000)
             embed.add_field(name='Balance', value='Your balance is now {}.'.format(balance), inline=True)
-            embed.set_thumbnail(url='https://i.imgur.com/akZqYz8.png')
-            await self.bot.say(embed=embed)
 
         else:
             config.add_section('{}'.format(user))
@@ -58,8 +56,8 @@ class Utils:
 
             embed = discord.Embed(title='Created Wallet', description='Your wallet has been created successfully!', color=0xFFD000)
             embed.add_field(name='Balance', value='Your balance is now 150.', inline=True)
-            embed.set_thumbnail(url='https://i.imgur.com/akZqYz8.png')
-            await self.bot.say(embed=embed)
+        embed.set_thumbnail(url='https://i.imgur.com/akZqYz8.png')
+        await self.bot.say(embed=embed)
 
     @commands.command(pass_context="True",brief="Posts a reaction gif",aliases=["reaction","reactiongif","gif","jif"])
     async def react(self, ctx, arg):
@@ -72,11 +70,10 @@ class Utils:
         if gif.startswith('http'):
             embed = discord.Embed(title=None, description=None, color=0x00FF99)
             embed.set_image(url=gif)
-            await self.bot.say(embed=embed)
         else:
             embed = discord.Embed(title=None, description=None, color=0x00FF99)
             embed.add_field(name=gif, value='Requested by {}'.format(ctx.message.author), inline=True)
-            await self.bot.say(embed=embed)
+        await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True, brief='Displays server information')
     async def serverinfo(self, ctx):

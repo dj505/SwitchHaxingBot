@@ -39,12 +39,11 @@ class Load:
             if module == "addons.load":
                 embed = discord.Embed(title='Woops!', description='I don\'t think you want to unload that!', color=0xFF0000)
                 embed.set_thumbnail(url='https://i.imgur.com/z2xfrsH.png')
-                await self.bot.say(embed=embed)
             else:
                 self.bot.unload_extension(module)
                 embed = discord.Embed(title='Extension unloaded!', description='Extension "{}" has been unloaded successfully.'.format(module), color=0x00ff99)
                 embed.set_thumbnail(url='https://i.imgur.com/TVtrqXR.png')
-                await self.bot.say(embed=embed)
+            await self.bot.say(embed=embed)
         except Exception as e:
             embed = discord.Embed(title='Extension unload failed!', description='Extension "{}" has failed to unload.'.format(module), color=0xFF0000)
             embed.add_field(name='Error', value='\n{}: {}\n'.format(type(e).__name__, e), inline=True)

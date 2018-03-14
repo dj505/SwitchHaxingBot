@@ -54,9 +54,6 @@ class ModUtils:
                 config.write(f)
 
             embed = discord.Embed(title='Added Balance', description='Your balance has been updated successfully!', color=0xFFD000)
-            embed.add_field(name='Balance', value='{} has given you {} credit(s)! Your balance is now {}.'.format(ctx.message.author, amount, balance), inline=True)
-            embed.set_thumbnail(url='https://i.imgur.com/akZqYz8.png')
-            await self.bot.say(embed=embed)
 
         else:
             config.add_section('{}'.format(user))
@@ -69,9 +66,9 @@ class ModUtils:
 
             balance = int(config.get('{}'.format(user), 'balance'))
             embed = discord.Embed(title='Created Wallet', description='Your wallet has been created and updated successfully!', color=0xFFD000)
-            embed.add_field(name='Balance', value='{} has given you {} credit(s)! Your balance is now {}.'.format(ctx.message.author, amount, balance), inline=True)
-            embed.set_thumbnail(url='https://i.imgur.com/akZqYz8.png')
-            await self.bot.say(embed=embed)
+        embed.add_field(name='Balance', value='{} has given you {} credit(s)! Your balance is now {}.'.format(ctx.message.author, amount, balance), inline=True)
+        embed.set_thumbnail(url='https://i.imgur.com/akZqYz8.png')
+        await self.bot.say(embed=embed)
 
     @commands.has_permissions(ban_members=True)
     @commands.command(pass_context="true",brief="Adds a reaction gif",aliases=['addreact','addreaction','addjif'])
@@ -106,18 +103,13 @@ class ModUtils:
                 calls += 1
         if calls == 1:
             embed = discord.Embed(name='Pruned Messages', description='Complete.', color=0x00FF00)
-            embed.set_author(name='Pruned Message(s)')
-            done_message = await self.bot.say(embed=embed)
-            await self.bot.delete_message(ctx.message)
-            await asyncio.sleep(3)
-            await self.bot.delete_message(done_message)
         else:
             embed = discord.Embed(name='Pruned Messages', description='Complete.'.format(str(calls)))
-            embed.set_author(name='Pruned Message(s)')
-            done_message = await self.bot.say(embed=embed)
-            await self.bot.delete_message(ctx.message)
-            await asyncio.sleep(3)
-            await self.bot.delete_message(done_message)
+        embed.set_author(name='Pruned Message(s)')
+        done_message = await self.bot.say(embed=embed)
+        await self.bot.delete_message(ctx.message)
+        await asyncio.sleep(3)
+        await self.bot.delete_message(done_message)
 
     @commands.has_permissions(ban_members=True)
     @commands.command(pass_context=True, brief='Sets hax status for a given FW')
