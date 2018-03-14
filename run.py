@@ -79,7 +79,8 @@ addons = [
     'addons.load',
     'addons.utils',
     'addons.xkcdparse',
-    'addons.modutils'
+    'addons.modutils',
+    'addons.bean'
 ]
 
 failed_addons = []
