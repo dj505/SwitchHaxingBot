@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 
 class xkcdparse:
     """
-    xkcd parser! Gets either a random comic, specified by number, or specified by keyword.
+    xkcd parser! Gets either a random comic, specified by number, or specified by keyword (eg `little bobby tables`).
     """
     def __init__(self, bot):
         self.bot = bot

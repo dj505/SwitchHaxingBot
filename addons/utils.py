@@ -93,43 +93,18 @@ class Utils:
         embed.add_field(name='GitHub Repository', value='https://github.com/dj505/SwitchHaxingBot', inline=True)
         await self.bot.say(embed=embed)
 
-#    @commands.command(pass_context=True, brief='Says something')
-#    async def say(self, ctx, *string):
-#        if '@' in str(ctx.message.content):
-#            embed = discord.Embed(title='Say command failed!', description='Please do not attempt to tag users with this command. \
-#                                                                            This results in either double tagging, or sending an `@everyone` tag \
-#                                                                            without permissions by using the bot as a loophole.', color=0xFF0000)
-#            embed.set_thumbnail(url='https://i.imgur.com/z2xfrsH.png')
-#            await self.bot.say(embed=embed)
-#
-#        elif ctx.message.author.name == "chucknorify17":
-#            config = SafeConfigParser()
-#            config.read('settings.ini')
-#            truefalse = config.get('main','chuckcanuse')
-#            if truefalse == 'True':
-#                await self.bot.say(ctx.message.content[7:])
-#                await self.bot.delete_message(ctx.message)
-#            else:
-#                await self.bot.say('Sorry chuck, you can\'t use that right now')
-#
-#        else:
-#            await self.bot.say(ctx.message.content[7:])
-#            await self.bot.delete_message(ctx.message)
-#
-#    @commands.command(pass_context=True)
-#    @commands.has_permissions(ban_members=True)
-#    async def letchuckusesay(self, ctx, tf):
-#        if ctx.message.author.name == "chucknorify17":
-#            await self.bot.say('nice try chuck')
-#
-#        else:
-#            config = SafeConfigParser()
-#            config.read('settings.ini')
-#            truefalse = str(tf)
-#            config.set('main','chuckcanuse','{}'.format(truefalse))
-#            with open('settings.ini', 'w') as f:
-#                config.write(f)
-#            await self.bot.say('Can Chuck use the `say` command: {}'.format(truefalse))
+    @commands.command(pass_context=True, brief='Says something')
+    async def say(self, ctx, *string):
+        if '@' in str(ctx.message.content):
+            embed = discord.Embed(title='Say command failed!', description='Please do not attempt to tag users with this command. \
+                                                                            This results in either double tagging, or sending an `@everyone` tag \
+                                                                            without permissions by using the bot as a loophole.', color=0xFF0000)
+            embed.set_thumbnail(url='https://i.imgur.com/z2xfrsH.png')
+            await self.bot.say(embed=embed)
+
+        else:
+            await self.bot.say(message_string_parser(ctx.message.content))
+            await self.bot.delete_message(ctx.message)
 
     @commands.command(pass_context=True, brief='Get user avatar')
     async def avatar(self, ctx, user: discord.Member):
@@ -153,6 +128,9 @@ class Utils:
             embed = discord.Embed(title='Invalid firmware!', description='I cannot find that firmware version!', color=0xFF0000)
             embed.set_thumbnail(url='https://i.imgur.com/z2xfrsH.png')
             await self.bot.say(embed=embed)
+
+def message_string_parser(message):
+    return(message[message.find(' ')+1:])
 
 def setup(bot):
     bot.add_cog(Utils(bot))
