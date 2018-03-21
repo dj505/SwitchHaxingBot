@@ -59,20 +59,40 @@ class Utils:
         embed.set_thumbnail(url='https://i.imgur.com/akZqYz8.png')
         await self.bot.say(embed=embed)
 
-    @commands.command(pass_context="True",brief="Posts a reaction gif",aliases=["reaction","reactiongif","gif","jif"])
+    @commands.command(pass_context=True,brief="Posts a reaction gif",aliases=["reaction","reactiongif","gif","jif"])
     async def react(self, ctx, arg):
         """
         Posts a reaction image or copypasta from a keyword specified.
         """
         config = SafeConfigParser()
         config.read('reactions.ini')
-        gif = config.get('gifs','{}'.format(arg))
-        if gif.startswith('http'):
-            embed = discord.Embed(title=None, description=None, color=0x00FF99)
-            embed.set_image(url=gif)
+        if config.has_option('gifs','{}'.format(arg)):
+            gif = config.get('gifs','{}'.format(arg))
+            if gif.startswith('http'):
+                embed = discord.Embed(title=None, description=None, color=0x00FF99)
+                embed.set_image(url=gif)
+            else:
+                embed = discord.Embed(title=None, description=None, color=0x00FF99)
+                embed.add_field(name=gif, value='Requested by {}'.format(ctx.message.author), inline=True)
+            await self.bot.say(embed=embed)
         else:
-            embed = discord.Embed(title=None, description=None, color=0x00FF99)
-            embed.add_field(name=gif, value='Requested by {}'.format(ctx.message.author), inline=True)
+            embed = discord.Embed(title='I could not find that reaction!', description='Please enter a valid reaction or try again.', color=0xFF0000)
+            embed.set_thumbnail(url='https://i.imgur.com/z2xfrsH.png')
+            await self.bot.say(embed=embed)
+
+    @commands.command(pass_context=True, brief='Lists reactions',aliases=['gifs','reactiongifs'])
+    async def reactions(self):
+        config = SafeConfigParser()
+        config.read('reactions.ini')
+        reactionlist = {k:v for k,v in config.items('gifs')}
+        reactions = []
+        bot_message='```'
+        for x in reactionlist:
+            reactions.append(str(x))
+        for elem in reactions:
+            bot_message += '{}\n'.format(elem)
+        bot_message += '```'
+        embed = discord.Embed(title='Gifs', description=bot_message, color=0x00FF99)
         await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True, brief='Displays server information')

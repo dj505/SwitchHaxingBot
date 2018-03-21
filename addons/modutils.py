@@ -54,6 +54,9 @@ class ModUtils:
                 config.write(f)
 
             embed = discord.Embed(title='Added Balance', description='Your balance has been updated successfully!', color=0xFFD000)
+            embed.add_field(name='Balance', value='{} has given you {} credit(s)! Your balance is now {}.'.format(ctx.message.author, amount, balance), inline=True)
+            embed.set_thumbnail(url='https://i.imgur.com/akZqYz8.png')
+            await self.bot.say(embed=embed)
 
         else:
             config.add_section('{}'.format(user))
@@ -66,9 +69,9 @@ class ModUtils:
 
             balance = int(config.get('{}'.format(user), 'balance'))
             embed = discord.Embed(title='Created Wallet', description='Your wallet has been created and updated successfully!', color=0xFFD000)
-        embed.add_field(name='Balance', value='{} has given you {} credit(s)! Your balance is now {}.'.format(ctx.message.author, amount, balance), inline=True)
-        embed.set_thumbnail(url='https://i.imgur.com/akZqYz8.png')
-        await self.bot.say(embed=embed)
+            embed.add_field(name='Balance', value='{} has given you {} credit(s)! Your balance is now {}.'.format(ctx.message.author, amount, balance), inline=True)
+            embed.set_thumbnail(url='https://i.imgur.com/akZqYz8.png')
+            await self.bot.say(embed=embed)
 
     @commands.has_permissions(ban_members=True)
     @commands.command(pass_context="true",brief="Adds a reaction gif",aliases=['addreact','addreaction','addjif'])
@@ -103,29 +106,35 @@ class ModUtils:
                 calls += 1
         if calls == 1:
             embed = discord.Embed(name='Pruned Messages', description='Complete.', color=0x00FF00)
+            embed.set_author(name='Pruned Message(s)')
+            done_message = await self.bot.say(embed=embed)
+            await self.bot.delete_message(ctx.message)
+            await asyncio.sleep(3)
+            await self.bot.delete_message(done_message)
         else:
             embed = discord.Embed(name='Pruned Messages', description='Complete.'.format(str(calls)))
-        embed.set_author(name='Pruned Message(s)')
-        done_message = await self.bot.say(embed=embed)
-        await self.bot.delete_message(ctx.message)
-        await asyncio.sleep(3)
-        await self.bot.delete_message(done_message)
+            embed.set_author(name='Pruned Message(s)')
+            done_message = await self.bot.say(embed=embed)
+            await self.bot.delete_message(ctx.message)
+            await asyncio.sleep(3)
+            await self.bot.delete_message(done_message)
 
     @commands.has_permissions(ban_members=True)
     @commands.command(pass_context=True, brief='Sets hax status for a given FW')
-    async def setfw(self, ctx, *fw_info):
+    async def setfw(self, ctx, fw, desc):
         '''
         Sets information for a given firmware version.
         '''
         config = SafeConfigParser()
         config.read('fwinfo.ini')
-        firmware = fw_info[fw_info.find(' ')]
-        description = fw_info[fw_info.find(' ')+1:]
+        firmware = str(fw)
+        description = str(desc)
         if config.has_section('{}'.format(firmware)):
             config.set('{}'.format(firmware), 'info', '{}'.format(description))
             with open('fwinfo.ini', 'w') as f:
                 config.write(f)
             embed = discord.Embed(title='Added a firmware config', description='Your config has been successfully recorded.', color=0x00FF99)
+            await self.bot.say(embed=embed)
 
         else:
             config.add_section('{}'.format(firmware))
@@ -133,7 +142,26 @@ class ModUtils:
             with open('fwinfo.ini', 'w') as f:
                 config.write(f)
             embed = discord.Embed(title='Added a firmware config', description='Your config has been successfully recorded.', color=0x00FF99)
-        await self.bot.say(embed=embed)
-        
+            await self.bot.say(embed=embed)
+
+    @commands.has_permissions(ban_members=True)
+    @commands.command(pass_context=True, brief='Removed a reaction gif entry', aliases=['delreact','removereact','killreact'])
+    async def deletereact(self, ctx, reaction):
+        '''
+        Removes a reaction gif or entry from the database.
+        '''
+        config = SafeConfigParser()
+        config.read('reactions.ini')
+        if config.has_option('gifs','{}'.format(reaction)):
+            config.remove_option('gifs','{}'.format(reaction))
+            with open('reactions.ini','w') as f:
+                config.write(f)
+            embed = discord.Embed(title='Removed a reaction!', description='Your reaction has been successfully removed.', color=0x00FF99)
+            await self.bot.say(embed=embed)
+        else:
+            embed = discord.Embed(title='I could not find that reaction!', description='Please enter a valid reaction or try again.', color=0xFF0000)
+            embed.set_thumbnail(url='https://i.imgur.com/z2xfrsH.png')
+            await self.bot.say(embed=embed)
+
 def setup(bot):
     bot.add_cog(ModUtils(bot))
