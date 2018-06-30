@@ -114,17 +114,10 @@ class Utils:
         await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True, brief='Says something')
-    async def say(self, ctx, *string):
-        if '@' in str(ctx.message.content):
-            embed = discord.Embed(title='Say command failed!', description='Please do not attempt to tag users with this command. \
-                                                                            This results in either double tagging, or sending an `@everyone` tag \
-                                                                            without permissions by using the bot as a loophole.', color=0xFF0000)
-            embed.set_thumbnail(url='https://i.imgur.com/z2xfrsH.png')
-            await self.bot.say(embed=embed)
-
-        else:
-            await self.bot.say(message_string_parser(ctx.message.content))
-            await self.bot.delete_message(ctx.message)
+    async def say(self, ctx, *, string):
+        await self.bot.delete_message(ctx.message)
+        string = string.replace('@everyone', '`@everyone`').replace('@here', '`@here`')
+        await self.bot.say(string)
 
     @commands.command(pass_context=True, brief='Get user avatar')
     async def avatar(self, ctx, user: discord.Member):
