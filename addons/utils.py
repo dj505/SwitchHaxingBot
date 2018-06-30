@@ -115,9 +115,9 @@ class Utils:
 
     @commands.command(pass_context=True, brief='Says something')
     async def say(self, ctx, *, string):
-        await ctx.message.delete()
+        await self.bot.delete_message(ctx.message)
         string = string.replace('@everyone', '`@everyone`').replace('@here', '`@here`')
-        await ctx.send(string)
+        await self.bot.say(string)
 
     @commands.command(pass_context=True, brief='Get user avatar')
     async def avatar(self, ctx, user: discord.Member):
